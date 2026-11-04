@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#e9efd8">
+  <meta name="description" content="Crazy Cattle 3 — овечий батл-рояль. Разгоняйся, тарань соперников и останься последним на арене.">
+  <title>Crazy Cattle 3 — устрой овечий хаос</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Crect width='80' height='80' rx='22' fill='%23c7f568'/%3E%3Ctext x='8' y='61' font-size='57'%3E🐑%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <canvas id="world" aria-label="Трёхмерная овечья арена"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <header id="topbar">
+    <a class="brand" href="./" aria-label="Crazy Cattle 3, главная">
+      <svg viewBox="0 0 48 40" aria-hidden="true"><path d="M10 25c-7-2-6-12 0-13-1-7 9-11 13-5 6-5 14-1 13 5 10 2 8 13 1 14l-3 9h-6l-1-8H17l-1 8h-6z" fill="currentColor"/><path d="M27 15c5-5 13-3 13 3v8c0 7-12 7-12 0z" fill="#eef1df"/><circle cx="35" cy="20" r="1.7" fill="currentColor"/></svg>
+      <span>CRAZY CATTLE<sup>3</sup></span>
+    </a>
+    <div class="header-right"><span class="edition"><i></i> THE FLOCK STRIKES BACK</span>
+      <button class="icon-button" id="sound-btn" aria-label="Включить звук" title="Звук"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path id="sound-wave" d="m17 9 5 6m0-6-5 6"/></svg></button>
+      <button class="icon-button" id="settings-btn" aria-label="Настройки" title="Настройки"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16M8 4v6m8 4v6"/></svg></button>
+      <button class="icon-button desktop" id="fullscreen-btn" aria-label="Полный экран" title="Полный экран"><svg viewBox="0 0 24 24"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m6 0h5v-5"/></svg></button>
+    </div>
+  </header>
+
+  <main id="menu" class="screen">
+    <div class="menu-copy">
+      <div class="eyebrow"><span>БАТЛ-РОЯЛЬ</span><span class="tiny-rule"></span> 24 ОВЦЫ. ОДИН ПОБЕДИТЕЛЬ.</div>
+      <h1><span>CRAZY</span><span>CATTLE<span class="title-three">3<span class="star">✦</span></span></span></h1>
+      <p class="tagline">МИЛЫЕ СНАРУЖИ.<br><span>БЕЗУМНЫЕ ВНУТРИ.</span></p>
+      <p class="intro">Разгоняйся. Тарань. Оставайся на ногах.<br>На этой ферме выживает самая безумная овца.</p>
+      <button id="play-btn" class="play-button" disabled><svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></svg><span>ЗАГРУЗКА ПАСТБИЩА…</span><span class="button-arrow">↗</span></button>
+      <div class="play-note"><span class="dot"></span> СОЛО ПРОТИВ БОТОВ <span class="note-divider">/</span> БЕЗ РЕГИСТРАЦИИ</div>
+    </div>
+    <div class="scene-tag"><span class="cross">✧</span><div>ЗНАКОМЬСЯ, № 01<span>Выглядит невинно. Пока что.</span></div><span class="tag-arrow">↙</span></div>
+    <div class="world-picker">
+      <div class="picker-heading"><span>ВЫБЕРИ СВОЁ ПАСТБИЩЕ</span><span>01 — 03</span></div>
+      <div class="map-grid" role="group" aria-label="Выбор арены">
+        <button class="map-card selected" data-map="0" aria-pressed="true"><span class="map-art meadow"><i></i><b>01</b></span><span class="map-name">Ирландия<small>Зелёный беспредел</small></span><span class="map-check">↗</span></button>
+        <button class="map-card" data-map="1" aria-pressed="false"><span class="map-art volcano"><i></i><b>02</b></span><span class="map-name">Исландия<small>Горячий приём</small></span><span class="map-check">↗</span></button>
+        <button class="map-card" data-map="2" aria-pressed="false"><span class="map-art snow"><i></i><b>03</b></span><span class="map-name">Новая Зеландия<small>Скользкий характер</small></span><span class="map-check">↗</span></button>
+      </div>
+    </div>
+    <div class="menu-stats"><div><span id="best-wins">00</span><small>ПОБЕД</small></div><span class="stats-divider"></span><div><span id="best-ko">00</span><small>НОКАУТОВ ЗА МАТЧ</small></div></div>
+    <footer class="menu-footer"><span>СДЕЛАНО ДЛЯ ЧИСТОГО ХАОСА <span class="asterisk">✳</span></span><button id="help-btn">КАК ИГРАТЬ <span>↗</span></button><span class="version">FAN GAME · V 1.0</span></footer>
+  </main>
+
+  <section id="hud" hidden aria-label="Игровая информация">
+    <div class="hud-top"><div class="alive-panel"><svg viewBox="0 0 48 40"><path d="M10 25c-7-2-6-12 0-13-1-7 9-11 13-5 6-5 14-1 13 5 10 2 8 13 1 14l-3 9h-6l-1-8H17l-1 8h-6z" fill="currentColor"/></svg><strong id="alive">24</strong><span>НА ПАСТБИЩЕ</span></div><div class="match-info"><span id="arena-name">ИРЛАНДИЯ</span><b id="timer">00:00</b></div><button class="icon-button" id="pause-btn" aria-label="Пауза"><svg viewBox="0 0 24 24"><path d="M8 5v14m8-14v14"/></svg></button></div>
+    <div id="announcements" aria-live="polite"></div><div id="countdown" hidden></div><div id="warning" hidden>ПАСТБИЩЕ СУЖАЕТСЯ</div>
+    <div class="hud-bottom"><div class="keyboard-hint"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> движение</span><span><kbd>Q</kbd><kbd>E</kbd> камера <kbd>ESC</kbd> пауза</span></div><div class="dash-widget"><div class="dash-label"><span>↯ РЫВОК</span><kbd>SPACE</kbd></div><div class="dash-track"><div id="dash-fill"></div></div><small id="dash-status">ГОТОВ К ТАРАНУ</small></div><div class="minimap-wrap"><canvas id="minimap" width="140" height="140" aria-label="Мини-карта"></canvas><span><b id="knockouts">0</b> НОКАУТОВ</span></div></div>
+    <div id="joystick" aria-label="Джойстик движения"><div id="stick"></div></div><button id="touch-dash" aria-label="Рывок">↯<span>РЫВОК</span></button>
+  </section>
+
+  <div id="modal-backdrop" hidden>
+    <section id="help-modal" class="modal" hidden aria-labelledby="help-title" role="dialog" aria-modal="true"><button class="modal-close" aria-label="Закрыть">×</button><span class="modal-kicker">НЕЖНОСТЬ ЗДЕСЬ НЕ ПОМОЖЕТ</span><h2 id="help-title">Правила стада.</h2><p>Вытолкни соперников за край и останься последней овцой на пастбище.</p><div class="help-row"><span class="help-icon">↟</span><div><b>Двигайся и набирай скорость</b><p>WASD или стрелки. На телефоне — джойстик слева.</p></div></div><div class="help-row"><span class="help-icon">↯</span><div><b>Тарань с разгона</b><p>Пробел — мощный рывок в направлении движения. Перезарядка — 3 секунды.</p></div></div><div class="help-row"><span class="help-icon">◎</span><div><b>Следи за краем</b><p>Через 25 секунд арена начнёт сужаться. Q / E поворачивают камеру.</p></div></div><button class="solid-button modal-close-action">ЯСНО. БУДЕТ ХАОС ↗</button></section>
+    <section id="settings-modal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="settings-title"><button class="modal-close" aria-label="Закрыть">×</button><span class="modal-kicker">ПОДСТРОЙ ПОД СЕБЯ</span><h2 id="settings-title">Твой хаос.</h2><label class="setting-row"><span>Звуковые эффекты</span><input id="sound-setting" type="checkbox" role="switch"></label><label class="setting-row"><span>Качество графики</span><select id="quality-setting"><option value="high">Высокое</option><option value="low">Экономное</option></select></label><label class="setting-row"><span>Тряска камеры</span><input id="shake-setting" type="checkbox" role="switch" checked></label><p class="settings-note">Рекорды и настройки сохраняются в этом браузере.</p></section>
+    <section id="pause-modal" class="modal compact" hidden role="dialog" aria-modal="true" aria-labelledby="pause-title"><span class="modal-kicker">СТАДО ПОДОЖДЁТ</span><h2 id="pause-title">Перекур.</h2><p>Немного тишины перед следующим тараном.</p><button id="resume-btn" class="solid-button">ПРОДОЛЖИТЬ ↗</button><button id="restart-btn" class="outline-button">НАЧАТЬ ЗАНОВО</button><button id="home-btn" class="text-button">На главное пастбище</button></section>
+    <section id="result-modal" class="modal compact result" hidden role="dialog" aria-modal="true" aria-labelledby="result-title"><div id="result-icon">♛</div><span class="modal-kicker" id="result-kicker">КОРОЛЬ ПАСТБИЩА</span><h2 id="result-title">БЕ-Е-ЕЗУМНО!</h2><p id="result-copy">Последняя овца. Первая легенда.</p><div class="result-stats"><div><b id="result-place">#1</b><span>МЕСТО</span></div><div><b id="result-ko">0</b><span>НОКАУТОВ</span></div><div><b id="result-time">00:00</b><span>ВРЕМЯ</span></div></div><button id="again-btn" class="solid-button">ЕЩЁ ОДИН ХАОС ↗</button><button id="result-home-btn" class="text-button">Выбрать пастбище</button></section>
+  </div>
+  <div id="error-panel" hidden><h2>Пастбище пока не загрузилось</h2><p id="error-message">Для игры нужен браузер с поддержкой WebGL.</p><button onclick="location.reload()">Попробовать ещё раз</button></div>
+  <script type="module" src="./game.js"></script>
+</body>
+</html>
